@@ -1,0 +1,676 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2022-12-31 六 23:48 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>计算机网络 自顶向下方法</title>
+<meta name="author" content="Civitasv" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/js/readtheorg.js"></script>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">计算机网络 自顶向下方法</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org190a3e4">一 计算机网络和因特网</a>
+<ul>
+<li><a href="#orgd35ed9f">摘要</a></li>
+<li><a href="#org066abef">1.1 什么是因特网</a></li>
+<li><a href="#org0353582">1.2 网络边缘</a>
+<ul>
+<li><a href="#org1c1cb06">1.2.1 接入网</a></li>
+</ul>
+</li>
+<li><a href="#org7274479">1.3 网络核心</a>
+<ul>
+<li><a href="#org18159cd">1.3.1 分组交换</a></li>
+<li><a href="#orgaf90923">1.3.2 电路交换</a></li>
+<li><a href="#org942f3e1">1.3.3 网络的网络</a></li>
+</ul>
+</li>
+<li><a href="#orgab60b47">1.4 分组交换网中的时延、丢包和吞吐量</a></li>
+<li><a href="#org8134bb9">1.5 协议层次及其服务模型</a></li>
+<li><a href="#org42fd1b9">1.6 面对攻击的网络</a></li>
+<li><a href="#orgcf35e79">课后习题和问题</a>
+<ul>
+<li><a href="#org70ada64">R1</a></li>
+<li><a href="#org934a468">R2</a></li>
+<li><a href="#orgedf4875">R3</a></li>
+<li><a href="#org38938c6">R4</a></li>
+<li><a href="#org1c75c9c">R5</a></li>
+<li><a href="#org1612620">R6</a></li>
+<li><a href="#org426bfb7">R7</a></li>
+<li><a href="#orga8020b2">R8</a></li>
+<li><a href="#org539be57">R9</a></li>
+<li><a href="#org2ef1f53">R10</a></li>
+<li><a href="#orgd154de1">R11</a></li>
+<li><a href="#org7ccae4f">R12</a></li>
+<li><a href="#org0b8f6c5">R13</a></li>
+<li><a href="#org48650a5">R14</a></li>
+<li><a href="#org69c9696">R15</a></li>
+<li><a href="#org112d3cb">R16</a></li>
+<li><a href="#org9a1cc3b">R17</a></li>
+<li><a href="#orgbdcf9df">R18</a></li>
+<li><a href="#org0f8794d">R19</a></li>
+<li><a href="#orge694359">R20</a></li>
+<li><a href="#org0126484">R21</a></li>
+<li><a href="#org99aab83">R22</a></li>
+<li><a href="#orge4e5b75">R23</a></li>
+<li><a href="#org0b2f2c4">R24</a></li>
+<li><a href="#org52e3b82">R25</a></li>
+<li><a href="#org2744cd6">R26</a></li>
+<li><a href="#orgd80b6fe">R27</a></li>
+<li><a href="#org5e86e6d">R28</a></li>
+</ul>
+</li>
+<li><a href="#orgf25d9ed">Wireshark实验</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org190a3e4" class="outline-2">
+<h2 id="org190a3e4">一 计算机网络和因特网</h2>
+<div class="outline-text-2" id="text-org190a3e4">
+</div>
+<div id="outline-container-orgd35ed9f" class="outline-3">
+<h3 id="orgd35ed9f">摘要</h3>
+<div class="outline-text-3" id="text-orgd35ed9f">
+<p>
+从整体上粗线条地勾勒出计算机网络的概貌。
+</p>
+
+<ul class="org-ul">
+<li>通信链路：communication link</li>
+<li>分组交换机：packet switch</li>
+<li>传输速率：transmission rate</li>
+<li>路由器：router</li>
+<li>链路层交换机：link-layer switch</li>
+<li>因特网服务提供商：Internet Service Provider, ISP</li>
+<li>传输控制协议：Transmission Control Protocol, TCP</li>
+<li>网际协议：Internet Protocol, IP</li>
+<li>请求评论：Request For Comment, RFC</li>
+<li>分布式应用程序：distributed application</li>
+<li>套接字接口：socket interface</li>
+<li>数字用户线：Digital Subscriber Line, DSL</li>
+<li>电缆因特网接入：cable Internet access</li>
+<li>光纤到户：Fiber To The Home, FTTH</li>
+<li>混合光纤同轴：Hybrid Fiber Coax, HFC</li>
+<li>存储转发传输：store-and-forward transmission</li>
+<li>电路交换：circuit switching</li>
+<li>频分复用：Frequency-Division Multiplexing, FDM</li>
+<li>时分复用：Time-Division Multiplexing, TDM</li>
+<li>存在点：Point of Presence, PoP</li>
+<li>因特网交换点：Internet Exchange Point, IXP</li>
+<li>内容提供商网络：content provider network</li>
+<li>节点处理时延：nodal processing delay</li>
+<li>排队时延：queuing delay</li>
+<li>传输时延：transmission delay</li>
+<li>传播时延：propagation delay</li>
+<li>bps: bit per second</li>
+<li>拒绝服务攻击：Denial-of-Service(DOS) attack</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org066abef" class="outline-3">
+<h3 id="org066abef">1.1 什么是因特网</h3>
+<div class="outline-text-3" id="text-org066abef">
+<p>
+<b>其一</b> 我们能够描述因特网的具体构成，即构成因特网的基本硬件和软件组件。
+</p>
+
+<p>
+分组：当一台端系统要向另一台端系统发送数据时，发送端系统将数据分段，并为每段加上首部字节，由此形成的信息包称为分组。
+</p>
+
+<p>
+两组最著名的分组交换机的类型是 路由器 和 链路层交换机。
+</p>
+
+<p>
+<b>其二</b> 我们能够根据为分布式应用提供服务的联网基础设施来描述因特网。
+</p>
+
+<p>
+涉及多个相互交换数据的端系统的应用程序称为分布式应用程序。
+</p>
+
+<p>
+<b>协议（protocol）</b> 定义了在两个或多个通信实体之间交换的格式和顺序，以及报文发送和/或接收一条报文或其他事件所采取的动作。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0353582" class="outline-3">
+<h3 id="org0353582">1.2 网络边缘</h3>
+<div class="outline-text-3" id="text-org0353582">
+<p>
+通常把与因特网相连的计算机和其他设备称为端系统，因为它们位于因特网的边缘。
+</p>
+
+
+<div id="orge9b5906" class="figure">
+<p><img src="./images/端系统交互.png" alt="端系统交互.png" />
+</p>
+</div>
+
+
+<p>
+主机（或端系统）可以进一步划分为两类：客户（client）和服务器（server）。
+</p>
+</div>
+
+<div id="outline-container-org1c1cb06" class="outline-4">
+<h4 id="org1c1cb06">1.2.1 接入网</h4>
+</div>
+</div>
+
+<div id="outline-container-org7274479" class="outline-3">
+<h3 id="org7274479">1.3 网络核心</h3>
+<div class="outline-text-3" id="text-org7274479">
+<p>
+网络核心是由互联因特网端系统的分组交换机和链路构成的网状结构。
+</p>
+</div>
+
+<div id="outline-container-org18159cd" class="outline-4">
+<h4 id="org18159cd">1.3.1 分组交换</h4>
+<div class="outline-text-4" id="text-org18159cd">
+<p>
+端系统彼此交换报文（message）。为了从源端系统向目的端系统发送报文，源将长报文划分为较小的数据块，称为分组。在源和目的地之间，每个分组都通过通信链路和分组交换机传送。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgaf90923" class="outline-4">
+<h4 id="orgaf90923">1.3.2 电路交换</h4>
+<div class="outline-text-4" id="text-orgaf90923">
+<p>
+在电路交换网络中，在端系统间通信会话期间，预留了端系统间沿路径通信所需要的资源（缓存、链路传输速率）。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org942f3e1" class="outline-4">
+<h4 id="org942f3e1">1.3.3 网络的网络</h4>
+<div class="outline-text-4" id="text-org942f3e1">
+<p>
+接入 ISP 自身必须互联，即创建网络的网络。
+</p>
+
+<p>
+今天的因特网是一个网络的网络，其结构复杂，由十多个第一层ISP和数十万个较低层ISP组成。较低层的ISP与较高层的ISP相连，较高层ISP彼此互联。用户和内容提供商是较低层ISP的客户，较低层ISP是较高层ISP的客户。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgab60b47" class="outline-3">
+<h3 id="orgab60b47">1.4 分组交换网中的时延、丢包和吞吐量</h3>
+</div>
+
+<div id="outline-container-org8134bb9" class="outline-3">
+<h3 id="org8134bb9">1.5 协议层次及其服务模型</h3>
+<div class="outline-text-3" id="text-org8134bb9">
+<p>
+为了给网络协议的设计提供一个结构，网络设计者以分层（layer）的方式组织协议以及实现这些协议的网络硬件和软件。
+</p>
+
+<p>
+协议分层具有概念化和结构化的优点。
+</p>
+
+<p>
+各层的所有协议被称为协议栈，因特网的协议栈由5个层次组成：物理层、链路层、网络层、运输层和应用层。
+</p>
+
+<ul class="org-ul">
+<li>应用层：HTTP、SMTP、FTP、DNS</li>
+<li>运输层：TCP/UDP</li>
+<li>网络层：IP</li>
+<li>链路层：以太网、WIFI、电缆接入网的 DOCSIS 协议</li>
+<li>物理层：物理协议</li>
+</ul>
+
+<p>
+OSI模型在应用层下增加了 表示层 和 会话层。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org42fd1b9" class="outline-3">
+<h3 id="org42fd1b9">1.6 面对攻击的网络</h3>
+<div class="outline-text-3" id="text-org42fd1b9">
+<p>
+多数恶意软件是自我复制的。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgcf35e79" class="outline-3">
+<h3 id="orgcf35e79">课后习题和问题</h3>
+<div class="outline-text-3" id="text-orgcf35e79">
+</div>
+<div id="outline-container-org70ada64" class="outline-4">
+<h4 id="org70ada64">R1</h4>
+<div class="outline-text-4" id="text-org70ada64">
+<p>
+所有与因特网连接的设备称为主机或者端系统。主机和端系统并没有不同，常见的端系统包括服务器、桌面PC、智能手机、平板电脑等，Web服务器是一种端系统。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org934a468" class="outline-4">
+<h4 id="org934a468">R2</h4>
+<div class="outline-text-4" id="text-org934a468">
+<p>
+百度百科： 国家之间或政府之间缔结的据以确定其相互权利和义务的协议文书，多用于重大的政治、经济、军事、法律等问题的协议。有双边的，也有多边的。狭义仅指以条约命名的协议，如同盟条约、友好条约、和平条约、互不侵犯条约等。广义指不论以何种名称或形式缔结的协议，如条约、公约、协定、联合宣言、联合公报、联合声明、议定书、会谈纪要、换文、合同等。条约、公约等属于国际法律文件,是最重要的外交文书。其缔结和生效程序很严格，需经国家宪法规定的机关批准，完成其法律手续。一般由缔约国各方派代表经正式谈判达成原则协议后,共同拟订条文;次经缔约方国家元首批准,再按商定日期和地点举行换文仪式,交换批准书。通常规定双方缔结的条约，自互换批准书之日起开始生效。条约或公约经签订后，在其有效期内对各缔约国均具有约束力。协定用于缔结意义不十分重大或短期性的协议，其应用较广泛，如贸易协定、海运协定等。议定书通常用于某些具体问题的协议，或用于对已经缔结的条约进行解释、补充、修改或延长其有效期等。协定和议定书的有效期较短，缔结手续也比较简单。换文指双方用互换照会的形式对达成协议的内容予以确认，有时它是条约、协定等的附件。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgedf4875" class="outline-4">
+<h4 id="orgedf4875">R3</h4>
+<div class="outline-text-4" id="text-orgedf4875">
+<p>
+标准定义了协议的具体内容，没有标准，协议就不能交互，因而不能完成有用的工作，为了完成一项工作，要求两个（或多个）通信实体运行相同的协议。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org38938c6" class="outline-4">
+<h4 id="org38938c6">R4</h4>
+<div class="outline-text-4" id="text-org38938c6">
+<p>
+住宅接入：DSL、电缆、FTTH、拨号和卫星
+</p>
+
+<p>
+公司接入：以太网和WiFi
+</p>
+
+<p>
+广域无线接入：3G和LTE
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1c75c9c" class="outline-4">
+<h4 id="org1c75c9c">R5</h4>
+<div class="outline-text-4" id="text-org1c75c9c">
+<p>
+HFC带宽是用户间共享的。下行HFC信道中不会发生碰撞。因为分组是由一个源发出，由不同的端系统接受，不会存在冲突。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1612620" class="outline-4">
+<h4 id="org1612620">R6</h4>
+<div class="outline-text-4" id="text-org1612620">
+<p>
+光纤到户，50M左右。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org426bfb7" class="outline-4">
+<h4 id="org426bfb7">R7</h4>
+<div class="outline-text-4" id="text-org426bfb7">
+<p>
+100M到1G不等。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga8020b2" class="outline-4">
+<h4 id="orga8020b2">R8</h4>
+<div class="outline-text-4" id="text-orga8020b2">
+<p>
+双绞铜线、同轴电缆、光纤等。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org539be57" class="outline-4">
+<h4 id="org539be57">R9</h4>
+<div class="outline-text-4" id="text-org539be57">
+<p>
+拨号调制解调器：速率56kbps，带宽专用
+</p>
+
+<p>
+HFC：下行速率：42.8Mbps，上行速率：30.7Mbps，带宽共享
+</p>
+
+<p>
+DSL：下行速率：24Mbps，上行速率:2.5Mbps，带宽共享
+</p>
+
+<p>
+FTTH：平均下行速率：20Mbps，带宽共享
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2ef1f53" class="outline-4">
+<h4 id="org2ef1f53">R10</h4>
+<div class="outline-text-4" id="text-org2ef1f53">
+<p>
+WiFi和4G接入。 WiFi速度快但距离短，4G速度慢但距离远。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd154de1" class="outline-4">
+<h4 id="orgd154de1">R11</h4>
+<div class="outline-text-4" id="text-orgd154de1">
+<p>
+\[\frac{L}{R_1}+\frac{L}{R_2}\]
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7ccae4f" class="outline-4">
+<h4 id="org7ccae4f">R12</h4>
+<div class="outline-text-4" id="text-org7ccae4f">
+<p>
+在电路交换网络中，在端系统间通信会话期间，预留了端系统间沿路径通信所需要的资源（缓存、链路传输速率）。TDM相比FDM的优点：
+</p>
+
+<ul class="org-ul">
+<li>当发生拥塞等网络问题时，TDM中的数据丢失可能只会是一部分，而FDM中就可能是大部分或全部。</li>
+<li>TDM适合数字信号传输，而FDM适合模拟信号传输，因为现在通信网络多是传输数字信号，所以TDM比FDM好。</li>
+<li>因为频分复用连接建立后，当中途没有数据传输时，他所占有的频段带宽不能被其他连接使用，故可能存在空置，而在时分复用的统计时分模式下，连接建立后，当某个连接暂时不用传输数据时可以少分时间片或者不分，即其时隙的分配时“按需分配”，这样就让出了相应的传输时间给其他连接。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org0b8f6c5" class="outline-4">
+<h4 id="org0b8f6c5">R13</h4>
+<div class="outline-text-4" id="text-org0b8f6c5">
+<p>
+a. 2个用户
+</p>
+
+<p>
+b. 如果两个或更少的用户在传输，即使它们同时传输，也仅仅完全占用了2Mbps链路，不会造成排队。如果有3个用户同时传输，需要3Mbps，而此时链路只有2Mbps，因此将会有排队时延。
+</p>
+
+<p>
+c. 20\%
+</p>
+
+<p>
+d. 同时传输的概率是 0.2*0.2*0.2=0.008。因为只有三个用户时，队列才会增长，所以队列增长的时间比率为0.008。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org48650a5" class="outline-4">
+<h4 id="org48650a5">R14</h4>
+<div class="outline-text-4" id="text-org48650a5">
+<p>
+等级结构相同级别的两个ISP之间是彼此互联的。
+</p>
+
+<p>
+IXP可以通过交换的流量对ISP收费。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org69c9696" class="outline-4">
+<h4 id="org69c9696">R15</h4>
+<div class="outline-text-4" id="text-org69c9696">
+<p>
+谷歌专用网络与较低层ISP对等，“绕过”因特网的较高层，不仅能够减少向顶层ISP支付的费用，而且对其服务最终如何交付给端用户有了更多的控制。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org112d3cb" class="outline-4">
+<h4 id="org112d3cb">R16</h4>
+<div class="outline-text-4" id="text-org112d3cb">
+<p>
+节点处理时延、排队时延、传输时延和传播时延。
+</p>
+
+<p>
+固定：节点处理时延、传输时延、传播时延
+</p>
+
+<p>
+变化：排队时延
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9a1cc3b" class="outline-4">
+<h4 id="org9a1cc3b">R17</h4>
+</div>
+
+<div id="outline-container-orgbdcf9df" class="outline-4">
+<h4 id="orgbdcf9df">R18</h4>
+<div class="outline-text-4" id="text-orgbdcf9df">
+<p>
+传输时延：\(1kb/2Mbps = 1*10^3*8 bit/2*10^6 bps = 4ms\)
+</p>
+
+<p>
+传播时延：\(2500km/2.5*10^8m/s=10ms\)
+</p>
+
+<p>
+总时间：14ms
+</p>
+
+<p>
+更为一般的：
+</p>
+
+<p>
+传输时延：8*L/R
+</p>
+
+<p>
+传播时延：d/s
+</p>
+
+<p>
+总时间：8*L/R+d/s
+</p>
+
+<p>
+时延与传输速率相关
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0f8794d" class="outline-4">
+<h4 id="org0f8794d">R19</h4>
+<div class="outline-text-4" id="text-org0f8794d">
+<p>
+吞吐量指每秒能够传送的数据量。
+</p>
+
+<p>
+a. 吞吐量为 500kb.
+b. \(4MB/500kbps=4*10^6*8 bit / 500*10^3 bps = 64s\)
+c. 100kbps, 320s
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge694359" class="outline-4">
+<h4 id="orge694359">R20</h4>
+<div class="outline-text-4" id="text-orge694359">
+<p>
+端系统利用应用层生成分组。
+</p>
+
+<p>
+此时的分组交换机指的是路由器，路由器使用分组中的IP地址来决定将该分组转发到哪一个链路。
+</p>
+
+<p>
+每个路由器都有一个转发表，当某分组到达一台路由器时，路由器检查IP地址，并用这个地址搜索转发表，以发现适当的输出链路。这种方式与沿途询问方向类似。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0126484" class="outline-4">
+<h4 id="org0126484">R21</h4>
+</div>
+
+<div id="outline-container-org99aab83" class="outline-4">
+<h4 id="org99aab83">R22</h4>
+<div class="outline-text-4" id="text-org99aab83">
+<p>
+比如运输层，TCP的任务有划分为短报文，拥塞控制，流量控制，可靠性等等。它的任务不是由两个（或更多）层次执行的。但是，很多层次的任务是互相重复的。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge4e5b75" class="outline-4">
+<h4 id="orge4e5b75">R23</h4>
+<div class="outline-text-4" id="text-orge4e5b75">
+<ul class="org-ul">
+<li>应用层：网络应用程序及它们的应用层协议存留的地方。</li>
+<li>运输层：在应用程序端点之间传送应用层报文。</li>
+<li>网络层：负责将数据报（datagram）的网络层分组从一台主机移动到另一台主机。</li>
+<li>链路层：将分组层从一个节点（主机或者路由器）移动到路径上的下一个节点。</li>
+<li>物理层：将链路层分组（帧，frame）中的一个个比特从一个节点移动到下一个节点。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org0b2f2c4" class="outline-4">
+<h4 id="org0b2f2c4">R24</h4>
+<div class="outline-text-4" id="text-org0b2f2c4">
+<p>
+应用层报文：一个端系统中的应用程序使用协议与另一个端系统中的应用程序交换信息分组，这种位于应用层的信息分组称为报文（message）。
+</p>
+
+<ul class="org-ul">
+<li>运输层报文段：运输层的分组</li>
+<li>网络层数据报：网络层的分组</li>
+<li>链路层帧：链路层的分组</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org52e3b82" class="outline-4">
+<h4 id="org52e3b82">R25</h4>
+<div class="outline-text-4" id="text-org52e3b82">
+<p>
+路由器处理的层次：物理层、链路层、网络层
+</p>
+
+<p>
+链路层交换机处理的层次：链路层、物理层
+</p>
+
+<p>
+主机处理的层次：物理层、链路层、网络层、运输层、应用层
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2744cd6" class="outline-4">
+<h4 id="org2744cd6">R26</h4>
+<div class="outline-text-4" id="text-org2744cd6">
+<p>
+病毒是一种需要某种形式的用户交互来感染用户设备的恶意软件。蠕虫是一种无须任何明显用户交互就能进入设备的恶意软件。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd80b6fe" class="outline-4">
+<h4 id="orgd80b6fe">R27</h4>
+<div class="outline-text-4" id="text-orgd80b6fe">
+<p>
+恶意软件控制了很多网络设备，统称为僵尸网络。
+</p>
+
+<p>
+利用恶意软件，僵尸网络中的网络设备向目标主机发送大量的分组，或者创建大量连接等等，使目标主机陷入困境。这就是僵尸网络被用于DDoS攻击的效果。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5e86e6d" class="outline-4">
+<h4 id="org5e86e6d">R28</h4>
+<div class="outline-text-4" id="text-org5e86e6d">
+<p>
+Trudy能够将有害程序投放到 Alice 和 Bob 的计算机中，能够使用分组嗅探器获得传输分组的副本，能够通过IP哄骗将具有虚假源地址的分组注入因特网。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf25d9ed" class="outline-3">
+<h3 id="orgf25d9ed">Wireshark实验</h3>
+<div class="outline-text-3" id="text-orgf25d9ed">
+<ol class="org-ol">
+<li>HTTP, TCP, DNS</li>
+<li>0.393960461s</li>
+<li>192.168.1.115, 128.119.245.12</li>
+<li>如 <a href="./chapters/chapter1/Get_Ok.pdf">./chapters/chapter1/Get_Ok.pdf</a> 所示。</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2022-12-31 六 00:00</p>
+<p class="author">Author: Civitasv</p>
+<p class="date">Created: 2022-12-31 六 23:48</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
